@@ -17,7 +17,7 @@ export const DisplaySOL = () => {
                 <div className="flex flex-wrap gap-3 items-center justify-center">
                     {isLoadingBalance ?
                         <Loading size={20} color={"#fff"} />
-                        : <h1 className="text-white">{`SOL Balance: ${userBalance.balance.toFixed(2)}`}</h1>}
+                        : <h1 className="text-white">{`SOL Balance: ${userBalance?.balance?.toFixed(2)}`}</h1>}
                 </div>
             </div>
         )

@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import "../styles/fonts.css"
 import '../components/wallet/wallet.css'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'

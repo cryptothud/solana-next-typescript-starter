@@ -15,7 +15,7 @@ export default function Home() {
         />
         <meta name="twitter:image" content={previewBannerURL} />
         <meta name="twitter:card" content="summary_large_image" />
-        <title>Example | Project Name</title>
+        <title>{projectName}</title>
         <link rel="shortcut icon" type="image/png" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="192x192" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="512x512" href="/favicon.ico" />
