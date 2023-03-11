@@ -6,7 +6,7 @@ export default function MainLayout({ children }) {
 
     return (
         <>
-            <div className="w-screen h-[60px]">
+            <div className="w-screen min-h-screen">
                 <ToastContainer />
                 <Navbar />
                 {children}
