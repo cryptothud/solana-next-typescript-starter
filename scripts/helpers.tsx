@@ -125,3 +125,13 @@ export const wait = (ms: any) => {
 export const paginate = (array: any, pageSize: any, pageNumber: any) => {
   return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
 }
+
+export const requestData = (body: any) => {
+  return {
+    method: 'POST',
+    header: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }
+}

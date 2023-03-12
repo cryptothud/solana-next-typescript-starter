@@ -8,7 +8,7 @@ export const PopupWindow = ({ showWindow, setShowWindow, backgroundColor, backgr
                     <div className="absolute top-0 right-0 cursor-pointer p-1" style={{ borderRadius: rounded ? "50%" : "0" }} onClick={() => setShowWindow(false)}>
                         <IoCloseSharp color="#fff" size={30} />
                     </div>
-                    <div className="flex flex-col items-center gap-2 overflow-auto m-auto max-h-full">
+                    <div className="flex flex-col items-center gap-2 overflow-auto my-auto max-h-full w-full">
                         {children}
                     </div>
                 </div>
