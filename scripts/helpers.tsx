@@ -1,8 +1,9 @@
-import { BlockheightBasedTransactionConfirmationStrategy, Connection, PublicKey, SendOptions, Transaction, TransactionInstruction } from "@solana/web3.js";
-import { TOKEN_PROGRAM_ID } from "../node_modules/@solana/spl-token";
+import { BlockheightBasedTransactionConfirmationStrategy, Connection, LAMPORTS_PER_SOL, PublicKey, SendOptions, SystemProgram, Transaction, TransactionInstruction, TransactionMessage, VersionedTransaction } from "@solana/web3.js";
+import { createAssociatedTokenAccountInstruction, createTransferInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "../node_modules/@solana/spl-token";
 import axios from "axios";
 import { programs } from "@metaplex/js";
 import hashlist from "./hashlist.json"
+import { WalletContextState } from "@solana/wallet-adapter-react";
 
 export declare type NFT = {
   mint: string;
@@ -72,8 +73,8 @@ export async function getNFTsByOwner(
   const tokens = tokenAccounts.value
     .filter((tokenAccount: any) => tokenAccount.account.data.parsed.info.tokenAmount.amount === "1")
     .map((o: any) => o.account.data.parsed.info.mint)
-    //include line below to only include nfts from your project!
-    //.filter((tokenAccount) => hashlist.includes(tokenAccount));
+  //include line below to only include nfts from your project!
+  //.filter((tokenAccount) => hashlist.includes(tokenAccount));
 
   return await getNFTMetadataForMany(tokens, conn);
 }
@@ -134,4 +135,84 @@ export const requestData = (body: any) => {
     },
     body: JSON.stringify(body)
   }
+}
+
+export const isBlockhashExpired = async (connection: Connection, lastValidBlockHeight: number) => {
+  let currentBlockHeight = (await connection.getBlockHeight('finalized'));
+  return (currentBlockHeight > lastValidBlockHeight - 150); // If currentBlockHeight is greater than, blockhash has expired.
+}
+
+export const confirmSignatureStatus = async (signature: string, connection: Connection, lastValidHeight: number) => {
+  let hashExpired = false;
+  let txSuccess = false;
+  while (!hashExpired && !txSuccess) {
+    const { value: status } = await connection.getSignatureStatus(signature);
+
+    // Break loop if transaction has succeeded
+    if (status && ((status.confirmationStatus === 'confirmed' || 'finalized'))) {
+      txSuccess = true;
+      console.log(`Transaction Success. View on explorer: https://solscan.io/tx/${signature}`);
+      break;
+    }
+    hashExpired = await isBlockhashExpired(connection, lastValidHeight);
+
+    // Break loop if blockhash has expired
+    if (hashExpired) {
+      console.log(`Blockhash has expired.`);
+      // (add your own logic to Fetch a new blockhash and resend the transaction or throw an error)
+      return false
+    }
+
+    // Check again after 2.5 sec
+    await wait(2500);
+  }
+  return txSuccess
+}
+
+export const solInstruction = (fromPubkey: PublicKey, toPubkey: PublicKey, amount: number) => {
+  return SystemProgram.transfer({
+    fromPubkey: fromPubkey,
+    toPubkey: toPubkey,
+    lamports: Math.round(amount * LAMPORTS_PER_SOL)
+  })
+}
+
+export const splInstructions = async (fromPubkey: PublicKey, toPubkey: PublicKey, amount: number, token: PublicKey, connection: Connection) => {
+  let instructions: TransactionInstruction[] = []
+  const source = await getAssociatedTokenAddress(token, fromPubkey)
+  const dest = await getAssociatedTokenAddress(token, toPubkey)
+  const supply = await connection.getTokenSupply(token)
+  const accountInfo = await connection.getAccountInfo(dest)
+  if (accountInfo === null) {
+    instructions.push(createAssociatedTokenAccountInstruction(fromPubkey, dest, toPubkey, token))
+  }
+  instructions.push(createTransferInstruction(source, dest, fromPubkey, Math.round((amount) * (10 ** +supply.value.decimals))))
+  return instructions
+}
+
+export const sendSolanaTransaction = async (wallet: WalletContextState, connection: Connection, instructions: TransactionInstruction[]) => {
+
+  const blockhashResponse = await connection.getLatestBlockhashAndContext('finalized');
+  const lastValidHeight = blockhashResponse.value.lastValidBlockHeight;
+
+  const messageV0 = new TransactionMessage({
+    payerKey: wallet.publicKey,
+    recentBlockhash: blockhashResponse.value.blockhash,
+    instructions: instructions
+  }).compileToV0Message();
+
+  const transaction = new VersionedTransaction(messageV0);
+  const signedTx = await wallet.signTransaction(transaction)
+  const signature = await connection.sendRawTransaction(signedTx.serialize());
+
+  let confirmed = false
+  confirmed = await confirmSignatureStatus(signature, connection, lastValidHeight)
+
+  if (confirmed === false) {
+    console.log("Transaction failed, please try again!")
+    confirmed = await sendSolanaTransaction(wallet, connection, instructions)
+  }
+
+  return confirmed
+
 }
