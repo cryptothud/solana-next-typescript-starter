@@ -4,6 +4,8 @@ import axios from "axios";
 import { programs } from "@metaplex/js";
 import hashlist from "./hashlist.json"
 import { WalletContextState } from "@solana/wallet-adapter-react";
+import rateLimit from "express-rate-limit"
+import slowDown from "express-slow-down"
 
 export declare type NFT = {
   mint: string;
@@ -137,6 +139,16 @@ export const requestData = (body: any) => {
   }
 }
 
+export const requestDataNode = (body: any) => {
+  return {
+    method: 'POST',
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams(body)
+  }
+}
+
 export const isBlockhashExpired = async (connection: Connection, lastValidBlockHeight: number) => {
   let currentBlockHeight = (await connection.getBlockHeight('finalized'));
   return (currentBlockHeight > lastValidBlockHeight - 150); // If currentBlockHeight is greater than, blockhash has expired.
@@ -216,3 +228,44 @@ export const sendSolanaTransaction = async (wallet: WalletContextState, connecti
   return confirmed
 
 }
+
+export const isServerRunning = async () => {
+  try {
+    const status = await (await fetch(`${process.env.NEXT_PUBLIC_SERVER_NAME}/check`)).json()
+
+    if (status.info === "success") {
+      return true
+    } else {
+      return false
+    }
+  } catch (e) {
+    return false
+  }
+}
+
+const getIP = request =>
+  request.ip ||
+  request.headers['x-forwarded-for'] ||
+  request.headers['x-real-ip'] ||
+  request.connection.remoteAddress
+
+const getRateLimitMiddlewares = ({
+  limit = 20,
+  windowMs = 60 * 1000,
+  delayAfter = Math.round(10 / 2),
+  delayMs = 500,
+} = {}) => [
+    slowDown({ keyGenerator: getIP, windowMs, delayAfter, delayMs }),
+    rateLimit({ keyGenerator: getIP, windowMs, max: limit }),
+  ]
+
+
+const applyMiddleware = middleware => (request, response) =>
+  new Promise((resolve, reject) => {
+    middleware(request, response, result =>
+      result instanceof Error ? reject(result) : resolve(result)
+    )
+  })
+
+
+export const middlewares = getRateLimitMiddlewares().map(applyMiddleware)
