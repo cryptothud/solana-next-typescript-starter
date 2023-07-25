@@ -8,6 +8,11 @@ import rateLimit from "express-rate-limit"
 import slowDown from "express-slow-down"
 import { keypairIdentity, Metaplex, sol, token } from '@metaplex-foundation/js';
 import bs58 from "bs58";
+import { MouseEventHandler, useState } from "react";
+import Image from "next/image";
+import crypto from 'crypto';
+import { toast } from "react-toastify";
+import { IKImage } from "imagekitio-react";
 
 export declare type NFT = {
   mint: string;
@@ -172,7 +177,7 @@ const getIP = request =>
   request.connection.remoteAddress
 
 const getRateLimitMiddlewares = ({
-  limit = 20,
+  limit = 200,
   windowMs = 60 * 1000,
   delayAfter = Math.round(10 / 2),
   delayMs = 500,
@@ -395,29 +400,31 @@ export const splInstructionsUsingMetaplex = async (metaplex: Metaplex, toOwner: 
 /* 
 * use this function to support transfer of pNFTs
 */
-export const nftInstructionsUsingMetaplex = async (metaplex: Metaplex, toOwner: PublicKey, splToken: PublicKey, amount?: number) => {
-  const rules = new PublicKey("eBJLFYPxJmMGKuFwpDWkzxZeUrad92kZRC5BJLpzyT9")
-  const nftOrSft = await metaplex.nfts().findByMint({
-    mintAddress: splToken,
-  });
+export const nftInstructionsUsingMetaplex = async (metaplex: Metaplex, fromOwner: PublicKey, toOwner: PublicKey, splToken: PublicKey, authority: any) => {
+  const nftOrSft = await metaplex.nfts().findByMint({ mintAddress: splToken });
 
-  return (
-    nftOrSft.tokenStandard === 4 ?
-      metaplex.nfts().builders().transfer({
-        nftOrSft,
-        toOwner,
-        amount: token(1),
-        authorizationDetails: {
-          rules
-        }
-      }).getInstructions()
-      :
-      metaplex.nfts().builders().transfer({
-        nftOrSft,
-        toOwner,
-        amount: token(amount ?? 1)
-      }).getInstructions()
-  )
+  let instructions = []
+
+  if (nftOrSft.tokenStandard === 4) {
+    instructions.push(...metaplex.nfts().builders().transfer({
+      nftOrSft,
+      fromOwner,
+      toOwner,
+      authorizationDetails: {
+        rules: nftOrSft.programmableConfig.ruleSet
+      },
+      authority: authority
+    }).getInstructions())
+  } else {
+    instructions.push(...metaplex.nfts().builders().transfer({
+      nftOrSft,
+      fromOwner,
+      toOwner,
+      authority: authority
+    }).getInstructions())
+  }
+
+  return instructions
 }
 
 
@@ -442,3 +449,178 @@ export const splInstructions = async (fromPubkey: PublicKey, toPubkey: PublicKey
   instructions.push(createTransferInstruction(source, dest, fromPubkey, Math.round((amount) * (10 ** +supply.value.decimals))))
   return instructions
 }
+
+export const ImageWithFallback = ({ alt, src, fallbackSrc, className, width, height }: { alt: string, src: string, fallbackSrc: string, className: string, width: number | `${number}`, height: number | `${number}` }) => {
+  const [imgSrc, setImgSrc] = useState(src ?? fallbackSrc);
+
+  return (
+    <Image
+      alt={alt}
+      src={imgSrc}
+      onError={() => {
+        setImgSrc(fallbackSrc);
+      }}
+      className={className}
+      width={width}
+      height={height}
+      priority
+    />
+  );
+};
+
+export const importKey = async (keyData: string, keyUsage: KeyUsage[]): Promise<CryptoKey> => {
+  const parsedKey = JSON.parse(keyData);
+  const key = await window.crypto.subtle.importKey(
+    'jwk',
+    parsedKey,
+    {
+      name: 'RSA-OAEP',
+      hash: { name: 'SHA-256' },
+    },
+    true,
+    keyUsage
+  );
+  return key;
+};
+
+export const encryptData = async (data: string, publicKey: CryptoKey): Promise<string> => {
+  const encoder = new TextEncoder();
+  const dataBuffer = encoder.encode(data);
+
+  const encryptedBuffer = await window.crypto.subtle.encrypt(
+    {
+      name: 'RSA-OAEP',
+    },
+    publicKey,
+    dataBuffer
+  );
+
+  const encryptedArray = Array.from(new Uint8Array(encryptedBuffer));
+  const encryptedData = btoa(String.fromCharCode(...encryptedArray));
+
+  return encryptedData;
+};
+
+
+export const importKeyBackend = async (keyData: string, keyUsage: KeyUsage[]): Promise<crypto.KeyObject> => {
+  const parsedKey = JSON.parse(JSON.parse(keyData));
+
+  const key = crypto.createPrivateKey({
+    key: parsedKey,
+    format: 'jwk',
+    type: 'pkcs8',
+  });
+
+  return key;
+};
+
+export const decryptData = async (encryptedData: string, privateKey: crypto.KeyObject): Promise<string> => {
+  const encryptedBuffer = Buffer.from(encryptedData, 'base64');
+
+  const decryptedBuffer = crypto.privateDecrypt(
+    {
+      key: privateKey,
+      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+      oaepHash: 'sha256',
+    },
+    encryptedBuffer
+  );
+
+  return decryptedBuffer.toString('utf8');
+};
+
+export const walletNotConnectedPopup = () => {
+  toast.dismiss()
+  toast.info("Wallet not connected.")
+}
+
+export const errorPopup = (error?: string) => {
+  toast.dismiss()
+  toast.error(`Error!${error ? ` ${error}` : ''}`)
+}
+
+export const connections = [
+  "https://wandering-multi-hexagon.solana-mainnet.quiknode.pro/1ed143c42870d43b9b3c14edef33b5da431ea14e/",
+  "https://skilled-convincing-pine.solana-mainnet.quiknode.pro/bb474c54a274a4ded6b60fe610c9de406ed3cefa/",
+  "https://green-polished-fire.solana-mainnet.quiknode.pro/0b8461a7cacccb991a0872d883157a01b7698b93/",
+  "https://methodical-alien-diamond.solana-mainnet.quiknode.pro/915c906e06afd5bad621a099696d66253b38028a/",
+  "https://hidden-purple-sponge.solana-mainnet.quiknode.pro/b2c98d2a6bcce7004f7c48e047b42f97c8e61a69/",
+  "https://little-nameless-market.solana-mainnet.quiknode.pro/f32b801f07671c87541eb4867a0c4a3d2ed26bb8/",
+  "https://bitter-evocative-glitter.solana-mainnet.quiknode.pro/aadeca4760637868fbcdf730332c5d848fd99b05/",
+  "https://lingering-winter-vineyard.solana-mainnet.quiknode.pro/cac2c64de80fb7bd7895357dbd96a436320d0441/",
+  "https://old-quaint-aura.solana-mainnet.quiknode.pro/0134402acc7d946c3cf6d033f66c04ab842cf2cd/",
+  "https://frequent-yolo-frost.solana-mainnet.quiknode.pro/408f3b50b5666de968ae110da91ee70ed2824a6a/"
+]
+
+export const randomConnection = () => {
+  return new Connection(connections[Math.floor(Math.random() * connections.length)], { commitment: "confirmed", confirmTransactionInitialTimeout: 60000 });
+}
+
+export const generateNewKeypair = async () => {
+  const exportKey = async (key: CryptoKey): Promise<string> => {
+    const exportedKey = await window.crypto.subtle.exportKey('jwk', key);
+    return JSON.stringify(exportedKey);
+  };
+  const generate = async (): Promise<{ publicKey: CryptoKey; privateKey: CryptoKey }> => {
+    const keyPair = await window.crypto.subtle.generateKey(
+      {
+        name: 'RSA-OAEP',
+        modulusLength: 2048,
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        hash: { name: 'SHA-256' },
+      },
+      true,
+      ['encrypt', 'decrypt']
+    );
+
+    return {
+      publicKey: keyPair.publicKey,
+      privateKey: keyPair.privateKey,
+    };
+  };
+  // Generate the key pair
+  const keyPair = await generate();
+
+  // Export the keys as text
+  const publicKeyText = await exportKey(keyPair.publicKey);
+  const privateKeyText = await exportKey(keyPair.privateKey);
+
+  console.log('Public Key:', publicKeyText);
+  console.log('Private Key:', privateKeyText);
+}
+
+const fixUrl = (url: string) => {
+  if (url.includes("arweave.net/")) {
+    return `${url.split("arweave.net/")[1]}`
+  } else if (url.includes("shdw-drive.genesysgo.net/")) {
+    return `${url.split("shdw-drive.genesysgo.net/")[1]}`
+  } else if (url.includes("nftstorage.link/")) {
+    return `${url.split("nftstorage.link/")[1]}`
+  } else {
+    return url
+  }
+}
+
+export const ImageWithProxyFallback = ({ src, width, height, className, style, onClick, alt }: { src: string, width: string, height: string, className?: string, style?: any, onClick?: MouseEventHandler<HTMLImageElement>, alt?: string }) => {
+  // // If the proxy image fails to load, switch to the original image
+  const handleError = (event) => {
+    event.target.src = src;
+  };
+
+  return (
+    <IKImage
+      path={fixUrl(src)}
+      transformation={[{
+        "height": height,
+        "width": width
+      }]}
+      loading="lazy"
+      lqip={{ active: true }}
+      onError={handleError}
+      className={className}
+      style={style}
+      onClick={onClick}
+      alt={alt ?? ""}
+    />
+  )
+};

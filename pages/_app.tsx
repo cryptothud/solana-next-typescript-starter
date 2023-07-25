@@ -11,7 +11,8 @@ require("@solana/wallet-adapter-react-ui/styles.css")
 import MainLayout from '../components/layouts/mainLayout'
 import { RecoilRoot } from 'recoil'
 import { Head } from 'next/document'
-import { projectName, projectDescription, previewBannerURL } from '../scripts/config'
+import { projectName, projectDescription, previewBannerURL, proxy } from '../scripts/config'
+import { IKContext } from "imagekitio-react"
 
 const WalletProvider = dynamic(
   () => import("../components/wallet/Wallet"),
@@ -66,9 +67,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <RecoilRoot>
           <WalletProvider>
-            <MainLayout>
-              <Component {...pageProps} />
-            </MainLayout>
+            <IKContext urlEndpoint={proxy}>
+              <MainLayout>
+                <Component {...pageProps} />
+              </MainLayout>
+            </IKContext>
           </WalletProvider>
         </RecoilRoot>
       </QueryClientProvider>
