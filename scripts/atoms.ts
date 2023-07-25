@@ -1,6 +1,6 @@
-import {atom} from "recoil";
+import { atom } from "recoil";
 
-export const placeholderAtom = atom({
-    key: 'placeholderAtom',
+export const timestampState = atom({
+    key: 'timestampState',
     default: null
 });
