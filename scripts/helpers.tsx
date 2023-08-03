@@ -541,7 +541,7 @@ export const errorPopup = (error?: string) => {
 
 export const connections = [
   "https://wandering-multi-hexagon.solana-mainnet.quiknode.pro/1ed143c42870d43b9b3c14edef33b5da431ea14e/",
-  "https://skilled-convincing-pine.solana-mainnet.quiknode.pro/bb474c54a274a4ded6b60fe610c9de406ed3cefa/",
+  "https://sly-ancient-water.solana-mainnet.quiknode.pro/1f85f307b91244eabbf3e8edc31913a1e9f0ee65/",
   "https://green-polished-fire.solana-mainnet.quiknode.pro/0b8461a7cacccb991a0872d883157a01b7698b93/",
   "https://methodical-alien-diamond.solana-mainnet.quiknode.pro/915c906e06afd5bad621a099696d66253b38028a/",
   "https://hidden-purple-sponge.solana-mainnet.quiknode.pro/b2c98d2a6bcce7004f7c48e047b42f97c8e61a69/",
