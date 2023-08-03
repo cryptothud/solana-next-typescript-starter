@@ -548,7 +548,7 @@ export const connections = [
   "https://little-nameless-market.solana-mainnet.quiknode.pro/f32b801f07671c87541eb4867a0c4a3d2ed26bb8/",
   "https://bitter-evocative-glitter.solana-mainnet.quiknode.pro/aadeca4760637868fbcdf730332c5d848fd99b05/",
   "https://lingering-winter-vineyard.solana-mainnet.quiknode.pro/cac2c64de80fb7bd7895357dbd96a436320d0441/",
-  "https://old-quaint-aura.solana-mainnet.quiknode.pro/0134402acc7d946c3cf6d033f66c04ab842cf2cd/",
+  "https://sparkling-wispy-dust.solana-mainnet.quiknode.pro/555ff48e42a059a53cc40fe214985817aa037436/",
   "https://small-delicate-ensemble.solana-mainnet.quiknode.pro/4470569f19498f848dca510b6757b179ba1cdb16/"
 ]
 
