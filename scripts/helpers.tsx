@@ -549,7 +549,7 @@ export const connections = [
   "https://bitter-evocative-glitter.solana-mainnet.quiknode.pro/aadeca4760637868fbcdf730332c5d848fd99b05/",
   "https://lingering-winter-vineyard.solana-mainnet.quiknode.pro/cac2c64de80fb7bd7895357dbd96a436320d0441/",
   "https://old-quaint-aura.solana-mainnet.quiknode.pro/0134402acc7d946c3cf6d033f66c04ab842cf2cd/",
-  "https://frequent-yolo-frost.solana-mainnet.quiknode.pro/408f3b50b5666de968ae110da91ee70ed2824a6a/"
+  "https://small-delicate-ensemble.solana-mainnet.quiknode.pro/4470569f19498f848dca510b6757b179ba1cdb16/"
 ]
 
 export const randomConnection = () => {
