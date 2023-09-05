@@ -14,6 +14,13 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
+"@babel/runtime@^7.22.6":
+  version "7.22.15"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.15.tgz#38f46494ccf6cf020bd4eed7124b425e83e523b8"
+  integrity sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@blocto/sdk@^0.2.21":
   version "0.2.22"
   resolved "https://registry.yarnpkg.com/@blocto/sdk/-/sdk-0.2.22.tgz#c7fe62809de0640a0a3f7a043c5bbceb8be17e38"
@@ -967,20 +974,20 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-6.10.1.tgz#5bd16082261d7364eabb511c788f00937dac588d"
   integrity sha512-z+ILK8Q3y+nfUl43ctCPuR4Y2bIxk/ooCQFwZxhtci1EhAtMDzMAx2W25qx8G1PPL9UUOdnUax19+F0OjXoj4w==
 
-"@metaplex-foundation/beet-solana@^0.3.0", "@metaplex-foundation/beet-solana@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@metaplex-foundation/beet-solana/-/beet-solana-0.3.1.tgz#4b37cda5c7f32ffd2bdd8b3164edc05c6463ab35"
-  integrity sha512-tgyEl6dvtLln8XX81JyBvWjIiEcjTkUwZbrM5dIobTmoqMuGewSyk9CClno8qsMsFdB5T3jC91Rjeqmu/6xk2g==
+"@metaplex-foundation/beet-solana@0.4.0", "@metaplex-foundation/beet-solana@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/beet-solana/-/beet-solana-0.4.0.tgz#52891e78674aaa54e0031f1bca5bfbc40de12e8d"
+  integrity sha512-B1L94N3ZGMo53b0uOSoznbuM5GBNJ8LwSeznxBxJ+OThvfHQ4B5oMUqb+0zdLRfkKGS7Q6tpHK9P+QK0j3w2cQ==
   dependencies:
     "@metaplex-foundation/beet" ">=0.1.0"
     "@solana/web3.js" "^1.56.2"
     bs58 "^5.0.0"
     debug "^4.3.4"
 
-"@metaplex-foundation/beet-solana@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@metaplex-foundation/beet-solana/-/beet-solana-0.4.0.tgz#52891e78674aaa54e0031f1bca5bfbc40de12e8d"
-  integrity sha512-B1L94N3ZGMo53b0uOSoznbuM5GBNJ8LwSeznxBxJ+OThvfHQ4B5oMUqb+0zdLRfkKGS7Q6tpHK9P+QK0j3w2cQ==
+"@metaplex-foundation/beet-solana@^0.3.0", "@metaplex-foundation/beet-solana@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/beet-solana/-/beet-solana-0.3.1.tgz#4b37cda5c7f32ffd2bdd8b3164edc05c6463ab35"
+  integrity sha512-tgyEl6dvtLln8XX81JyBvWjIiEcjTkUwZbrM5dIobTmoqMuGewSyk9CClno8qsMsFdB5T3jC91Rjeqmu/6xk2g==
   dependencies:
     "@metaplex-foundation/beet" ">=0.1.0"
     "@solana/web3.js" "^1.56.2"
@@ -1047,6 +1054,36 @@
     mime "^3.0.0"
     node-fetch "^2.6.7"
 
+"@metaplex-foundation/js@^0.19.2":
+  version "0.19.4"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/js/-/js-0.19.4.tgz#992fe6b48e8dd0374d99028a07f75547cb6381d7"
+  integrity sha512-fiAaMl4p7v1tcU7ZoEr1lCzE6JR2gEWGeHOBarLTpiCjMe8ni3E+cukJQC6p0Ik+Z6IIFtEVNNy5OnMS3LLS4A==
+  dependencies:
+    "@bundlr-network/client" "^0.8.8"
+    "@metaplex-foundation/beet" "0.7.1"
+    "@metaplex-foundation/mpl-auction-house" "^2.3.0"
+    "@metaplex-foundation/mpl-bubblegum" "^0.6.2"
+    "@metaplex-foundation/mpl-candy-guard" "^0.3.0"
+    "@metaplex-foundation/mpl-candy-machine" "^5.0.0"
+    "@metaplex-foundation/mpl-candy-machine-core" "^0.1.2"
+    "@metaplex-foundation/mpl-token-metadata" "^2.11.0"
+    "@noble/ed25519" "^1.7.1"
+    "@noble/hashes" "^1.1.3"
+    "@solana/spl-account-compression" "^0.1.8"
+    "@solana/spl-token" "^0.3.5"
+    "@solana/web3.js" "^1.63.1"
+    bignumber.js "^9.0.2"
+    bn.js "^5.2.1"
+    bs58 "^5.0.0"
+    buffer "^6.0.3"
+    debug "^4.3.4"
+    eventemitter3 "^4.0.7"
+    lodash.clonedeep "^4.5.0"
+    lodash.isequal "^4.5.0"
+    merkletreejs "^0.2.32"
+    mime "^3.0.0"
+    node-fetch "^2.6.7"
+
 "@metaplex-foundation/mpl-auction-house@^2.3.0":
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-auction-house/-/mpl-auction-house-2.5.1.tgz#ea0e21e594b0db5e73f88688eb2e7c9b748b378b"
@@ -1067,6 +1104,21 @@
     "@metaplex-foundation/mpl-core" "^0.0.2"
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.31.0"
+
+"@metaplex-foundation/mpl-bubblegum@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-bubblegum/-/mpl-bubblegum-0.6.2.tgz#e1b098ccef10899b0d759a03e3d4b1ae7bdc9f0c"
+  integrity sha512-4tF7/FFSNtpozuIGD7gMKcqK2D49eVXZ144xiowC5H1iBeu009/oj2m8Tj6n4DpYFKWJ2JQhhhk0a2q7x0Begw==
+  dependencies:
+    "@metaplex-foundation/beet" "0.7.1"
+    "@metaplex-foundation/beet-solana" "0.4.0"
+    "@metaplex-foundation/cusper" "^0.0.2"
+    "@metaplex-foundation/mpl-token-metadata" "^2.5.2"
+    "@solana/spl-account-compression" "^0.1.4"
+    "@solana/spl-token" "^0.1.8"
+    "@solana/web3.js" "^1.50.1"
+    bn.js "^5.2.0"
+    js-sha3 "^0.8.0"
 
 "@metaplex-foundation/mpl-candy-guard@^0.3.0":
   version "0.3.2"
@@ -1109,6 +1161,11 @@
     "@solana/web3.js" "^1.31.0"
     bs58 "^4.0.1"
 
+"@metaplex-foundation/mpl-essentials@^0.5.8":
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-essentials/-/mpl-essentials-0.5.9.tgz#afc2f5a2332a1cedcfd4cb50021938f9707d7c50"
+  integrity sha512-DXGVDawrZtBE2gv7GI8yYWgFWwhOs0zcIp0wztu0WeuDl84DLN/cKSzBUKtI9ILEv9JoFIirGT6KB/ju03HpbQ==
+
 "@metaplex-foundation/mpl-metaplex@^0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-metaplex/-/mpl-metaplex-0.0.5.tgz#f4b94582831824d134337453a8556c6c1ea13642"
@@ -1120,6 +1177,13 @@
     "@metaplex-foundation/mpl-token-vault" "^0.0.2"
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.31.0"
+
+"@metaplex-foundation/mpl-token-metadata@3.0.0-alpha.21":
+  version "3.0.0-alpha.21"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-3.0.0-alpha.21.tgz#b77ccdfbc0c7c48a7a56dab02cc941626c401341"
+  integrity sha512-YIWUEvTB9alDa/I2MjJwUTE/OG7sbQcWxI8d/AmXUH9+QYxC73HBqQM7KF7AKF3laAwQy2UYxJZsXEObUcUQEg==
+  dependencies:
+    "@metaplex-foundation/mpl-essentials" "^0.5.8"
 
 "@metaplex-foundation/mpl-token-metadata@^0.0.2":
   version "0.0.2"
@@ -1139,10 +1203,10 @@
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.31.0"
 
-"@metaplex-foundation/mpl-token-metadata@^2.8.2":
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.8.2.tgz#caab7be2b4cb59f6ad4d84ea71be2e42f9b92d93"
-  integrity sha512-5q3M5as+FsPF7eJ5xWqgkmwh79WcgcSvKCuqqhzBZzwCO8hlSyHYejORR59PGd9Em1N8NuoV0+i7w0/4gDUQuA==
+"@metaplex-foundation/mpl-token-metadata@^2.11.0", "@metaplex-foundation/mpl-token-metadata@^2.5.2":
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.13.0.tgz#ea498190ad4ed1d4c0b8218a72d03bd17a883d11"
+  integrity sha512-Fl/8I0L9rv4bKTV/RAl5YIbJe9SnQPInKvLz+xR1fEc4/VQkuCn3RPgypfUMEKWmCznzaw4sApDxy6CFS4qmJw==
   dependencies:
     "@metaplex-foundation/beet" "^0.7.1"
     "@metaplex-foundation/beet-solana" "^0.4.0"
@@ -1173,6 +1237,82 @@
     "@metaplex-foundation/mpl-core" "^0.0.2"
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.31.0"
+
+"@metaplex-foundation/umi-bundle-defaults@^0.7.12":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-bundle-defaults/-/umi-bundle-defaults-0.7.14.tgz#58e9f3163787590669bcdefda5a71856430efab9"
+  integrity sha512-23Z3IhT/cOsqbtSHTf7RSbFO4B2PTQibpdDhosVh3ObJorV/RTEVru5dwfvSmW+dgx5OThwOMeku+979FrGaQA==
+  dependencies:
+    "@metaplex-foundation/umi-downloader-http" "^0.7.14"
+    "@metaplex-foundation/umi-eddsa-web3js" "^0.7.14"
+    "@metaplex-foundation/umi-http-fetch" "^0.7.14"
+    "@metaplex-foundation/umi-program-repository" "^0.7.14"
+    "@metaplex-foundation/umi-rpc-chunk-get-accounts" "^0.7.14"
+    "@metaplex-foundation/umi-rpc-web3js" "^0.7.14"
+    "@metaplex-foundation/umi-serializer-data-view" "^0.7.14"
+    "@metaplex-foundation/umi-transaction-factory-web3js" "^0.7.14"
+
+"@metaplex-foundation/umi-downloader-http@^0.7.14":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-downloader-http/-/umi-downloader-http-0.7.14.tgz#66fbf9147b79336640c88ae955bfc8edfec2d2d1"
+  integrity sha512-RAkKCzcRO19lWdMFQiT8ReC5zCSuVFfJKFzRX90uFY97QxfBafMxS0i311j+gBbpQ9aF1BALNALEdo+1ak38uQ==
+
+"@metaplex-foundation/umi-eddsa-web3js@^0.7.14":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-eddsa-web3js/-/umi-eddsa-web3js-0.7.14.tgz#1f813aae051ef307c32fe7483ff3aaab25d12243"
+  integrity sha512-j8tCMiPYRgT4eGueu7Isfbxkqab+WDsXMyXAF25TrsXAzRHDGCL7hM6ZVTU7/DqHaMoJppeAQV/0iH/O1S/3kA==
+  dependencies:
+    "@metaplex-foundation/umi-web3js-adapters" "^0.7.14"
+    "@noble/curves" "^1.0.0"
+
+"@metaplex-foundation/umi-http-fetch@^0.7.14":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-http-fetch/-/umi-http-fetch-0.7.14.tgz#2ce1c2b4f1c70935d7fabb1d8be33c571433170c"
+  integrity sha512-gdTEEXseYnqTaYh6tiG8ri3ayUc7jXNFqLn/iq69uHiqlGtMBujW7tbOr7ysrvBRnneMtLT2kaPOcN4PTV0Kdg==
+  dependencies:
+    node-fetch "^2.6.7"
+
+"@metaplex-foundation/umi-program-repository@^0.7.14":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-program-repository/-/umi-program-repository-0.7.14.tgz#3d30f94aa170af030a190f841e19ccf824e195bd"
+  integrity sha512-e65k8ghkyKP5I0Esz6Ry4EdTYht5bMf8t5s7xP4GkBjgosd3y16vxVrnG5BRs5v2W9yGD0TUONWW9dMKTdDsnQ==
+
+"@metaplex-foundation/umi-rpc-chunk-get-accounts@^0.7.14":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-rpc-chunk-get-accounts/-/umi-rpc-chunk-get-accounts-0.7.14.tgz#f4f1296334af7bf80a9f84ef91abe270b3fe47b6"
+  integrity sha512-e3AxB0oJuXXQpL5DQCcxhKoiMcIlIZ//HazXCxqcjYRKrH3IbU3OJpHzL5OeJPwXdu2ISMTr0mBh/ceKouGT/A==
+
+"@metaplex-foundation/umi-rpc-web3js@^0.7.14":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-rpc-web3js/-/umi-rpc-web3js-0.7.14.tgz#e372635930915828b72c900f24cc760659472aac"
+  integrity sha512-3NztdHCCf/Vs1tzUPLQAfKyBdw+27y8XEGdJKb6jUj6zrW/QZGR9YcBb1KAFBbyMEmRj/pJ3cewG91QZO8+6JA==
+  dependencies:
+    "@metaplex-foundation/umi-web3js-adapters" "^0.7.14"
+
+"@metaplex-foundation/umi-serializer-data-view@^0.7.14":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-serializer-data-view/-/umi-serializer-data-view-0.7.14.tgz#d96db92a223c954e00c58da1dbea3ce3e8acfba2"
+  integrity sha512-Uo5fZgQIQzuczS7b0Od3YZw8f2mAbgQ6rkLxzYzmjYWomwAsvA4gtBaTtMc0sXc+PA6w4iiodCKsTzwRjJmIMg==
+
+"@metaplex-foundation/umi-transaction-factory-web3js@^0.7.14":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-transaction-factory-web3js/-/umi-transaction-factory-web3js-0.7.14.tgz#4455fc4a24bcd3fde76a15b9ade1fa7178412ad6"
+  integrity sha512-El/5D/jU4bgqBv9eQWbIuzpESc2jyOu/Nhv4vz4ZmJDbmDgumCKV0EonJM3G5+/95TwarXx8L8RoiIDIWx9FsA==
+  dependencies:
+    "@metaplex-foundation/umi-serializer-data-view" "^0.7.14"
+    "@metaplex-foundation/umi-web3js-adapters" "^0.7.14"
+
+"@metaplex-foundation/umi-web3js-adapters@^0.7.12", "@metaplex-foundation/umi-web3js-adapters@^0.7.14":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi-web3js-adapters/-/umi-web3js-adapters-0.7.14.tgz#289226cbab1355803fa5de805266180bfcfb035e"
+  integrity sha512-GQ6bR1IsFrlY6E4odZcxk8z4ZptvS5KtB5lIeCxPBjJp9bm4Atk3mjQhoR+vu/VECqG+8ht+NCLTXX8RGAKM3Q==
+  dependencies:
+    buffer "^6.0.3"
+
+"@metaplex-foundation/umi@^0.7.11":
+  version "0.7.14"
+  resolved "https://registry.yarnpkg.com/@metaplex-foundation/umi/-/umi-0.7.14.tgz#e54f4c0420d752e46253b83aec6322fb6d9e4b63"
+  integrity sha512-rzq2OMGiWe1dsKZjxQYVSzWGh86QNT4cryXqv45gQhkaO0i7gLXjlvS09pqvI/3SuC5EHL799bo5XGJRmdYfMQ==
 
 "@metaplex/js@^4.12.0":
   version "4.12.0"
@@ -1283,10 +1423,22 @@
     jsbi "^3.1.5"
     sha.js "^2.4.11"
 
+"@noble/curves@^1.0.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.2.0.tgz#92d7e12e4e49b23105a2555c6984d41733d65c35"
+  integrity sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==
+  dependencies:
+    "@noble/hashes" "1.3.2"
+
 "@noble/ed25519@^1.6.1", "@noble/ed25519@^1.7.0", "@noble/ed25519@^1.7.1":
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/@noble/ed25519/-/ed25519-1.7.3.tgz#57e1677bf6885354b466c38e2b620c62f45a7123"
   integrity sha512-iR8GBkDt0Q3GyaVcIu7mSsVIqnFbkbRzGLWlvhwunacoLwt4J3swfKhfaM6rN6WY+TBGoYT1GtT1mIh2/jGbRQ==
+
+"@noble/hashes@1.3.2", "@noble/hashes@^1.3.1":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.3.2.tgz#6f26dbc8fbc7205873ce3cee2f690eba0d421b39"
+  integrity sha512-MVC8EAQp7MvEcm30KWENFjgR+Mkmf+D189XJTkFIlwohU5hcBbn1ZkKq7KVTi2Hme3PMGF390DaL52beVrIihQ==
 
 "@noble/hashes@^1.1.2":
   version "1.2.0"
@@ -1522,6 +1674,18 @@
   integrity sha512-E1ImOIAD1tBZFRdjeM4/pzTiTApC0AOBGwyAMS4fwIodCWArzJ3DWdoh8cKxeFM2fElkxBh2Aqts1BPC373rHA==
   dependencies:
     buffer "~6.0.3"
+
+"@solana/spl-account-compression@^0.1.4", "@solana/spl-account-compression@^0.1.8":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@solana/spl-account-compression/-/spl-account-compression-0.1.10.tgz#b3135ce89349d6090832b3b1d89095badd57e969"
+  integrity sha512-IQAOJrVOUo6LCgeWW9lHuXo6JDbi4g3/RkQtvY0SyalvSWk9BIkHHe4IkAzaQw8q/BxEVBIjz8e9bNYWIAESNw==
+  dependencies:
+    "@metaplex-foundation/beet" "^0.7.1"
+    "@metaplex-foundation/beet-solana" "^0.4.0"
+    bn.js "^5.2.1"
+    borsh "^0.7.0"
+    js-sha3 "^0.8.0"
+    typescript-collections "^1.3.3"
 
 "@solana/spl-token@^0.1.8":
   version "0.1.8"
@@ -2071,6 +2235,27 @@
     jayson "^3.4.4"
     node-fetch "2"
     rpc-websockets "^7.5.0"
+    superstruct "^0.14.2"
+
+"@solana/web3.js@^1.50.1":
+  version "1.78.4"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.78.4.tgz#e8ca9abe4ec2af5fc540c1d272efee24aaffedb3"
+  integrity sha512-up5VG1dK+GPhykmuMIozJZBbVqpm77vbOG6/r5dS7NBGZonwHfTLdBbsYc3rjmaQ4DpCXUa3tUc4RZHRORvZrw==
+  dependencies:
+    "@babel/runtime" "^7.22.6"
+    "@noble/curves" "^1.0.0"
+    "@noble/hashes" "^1.3.1"
+    "@solana/buffer-layout" "^4.0.0"
+    agentkeepalive "^4.3.0"
+    bigint-buffer "^1.1.5"
+    bn.js "^5.2.1"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    buffer "6.0.3"
+    fast-stable-stringify "^1.0.0"
+    jayson "^4.1.0"
+    node-fetch "^2.6.12"
+    rpc-websockets "^7.5.1"
     superstruct "^0.14.2"
 
 "@solana/web3.js@^1.63.1", "@solana/web3.js@^1.75.0":
@@ -2906,6 +3091,13 @@ agentkeepalive@^4.2.1:
   dependencies:
     debug "^4.1.0"
     depd "^1.1.2"
+    humanize-ms "^1.2.1"
+
+agentkeepalive@^4.3.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/agentkeepalive/-/agentkeepalive-4.5.0.tgz#2673ad1389b3c418c5a20c5d7364f93ca04be923"
+  integrity sha512-5GG/5IbQQpC9FpkRGsSvZI5QYeSCzlJHdpBQntCsuTOxhKD8lqKhrleg2Yi7yvMIf82Ycmmqln9U8V9qwEiJew==
+  dependencies:
     humanize-ms "^1.2.1"
 
 algo-msgpack-with-bigint@^2.1.1:
@@ -4619,6 +4811,24 @@ jayson@^3.4.4:
     uuid "^8.3.2"
     ws "^7.4.5"
 
+jayson@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/jayson/-/jayson-4.1.0.tgz#60dc946a85197317f2b1439d672a8b0a99cea2f9"
+  integrity sha512-R6JlbyLN53Mjku329XoRT2zJAE6ZgOQ8f91ucYdMCD4nkGCF9kZSrcGXpHIU4jeKj58zUZke2p+cdQchU7Ly7A==
+  dependencies:
+    "@types/connect" "^3.4.33"
+    "@types/node" "^12.12.54"
+    "@types/ws" "^7.4.4"
+    JSONStream "^1.3.5"
+    commander "^2.20.3"
+    delay "^5.0.0"
+    es6-promisify "^5.0.0"
+    eyes "^0.1.8"
+    isomorphic-ws "^4.0.1"
+    json-stringify-safe "^5.0.1"
+    uuid "^8.3.2"
+    ws "^7.4.5"
+
 jmespath@^0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
@@ -5034,6 +5244,13 @@ node-fetch@2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
+  dependencies:
+    whatwg-url "^5.0.0"
+
+node-fetch@^2.6.12:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.7.0.tgz#d0f0fa6e3e2dc1d27efcd8ad99d550bda94d187d"
+  integrity sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==
   dependencies:
     whatwg-url "^5.0.0"
 
@@ -5596,6 +5813,11 @@ regenerator-runtime@^0.13.11:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
   integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
+regenerator-runtime@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz#5e19d68eb12d486f797e15a3c6a918f7cec5eb45"
+  integrity sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==
+
 require-directory@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
@@ -6104,6 +6326,11 @@ type-fest@^0.21.3:
   version "0.21.3"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.21.3.tgz#d260a24b0198436e133fa26a524a6d65fa3b2e37"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
+
+typescript-collections@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/typescript-collections/-/typescript-collections-1.3.3.tgz#62d50d93c018c094d425eabee649f00ec5cc0fea"
+  integrity sha512-7sI4e/bZijOzyURng88oOFZCISQPTHozfE2sUu5AviFYk5QV7fYGb6YiDl+vKjF/pICA354JImBImL9XJWUvdQ==
 
 typescript@4.9.5, typescript@^4.4.4, typescript@^4.6.2:
   version "4.9.5"

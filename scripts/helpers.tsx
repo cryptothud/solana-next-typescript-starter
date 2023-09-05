@@ -11,31 +11,12 @@ import bs58 from "bs58";
 import { MouseEventHandler, useState } from "react";
 import Image from "next/image";
 import crypto from 'crypto';
-import { toast } from "react-toastify";
+import { ToastContent, ToastOptions, toast as showToast } from "react-toastify";
 import { IKImage } from "imagekitio-react";
-
-export declare type NFT = {
-  mint: string;
-  onchainMetadata: programs.metadata.MetadataData;
-  externalMetadata: {
-    attributes: Array<any>;
-    collection: any;
-    description: string;
-    edition: number;
-    external_url: string;
-    image: string;
-    name: string;
-    properties: {
-      files: Array<string>;
-      category: string;
-      creators: Array<{
-        pubKey: string;
-        address: string;
-      }>;
-    };
-    seller_fee_basis_points: number;
-  };
-};
+import { INFT } from "./types";
+import { createUmi } from '@metaplex-foundation/umi-bundle-defaults'
+import { publicKey, unwrapSome } from '@metaplex-foundation/umi'
+import { fetchTokenRecordFromSeeds } from '@metaplex-foundation/mpl-token-metadata';
 
 const {
   metadata: { Metadata },
@@ -44,7 +25,7 @@ const {
 export async function getNFTMetadata(
   mint: string,
   conn: Connection
-): Promise<NFT> {
+): Promise<INFT> {
   try {
     const metadataPDA = await Metadata.getPDA(mint);
     const onchainMetadata = (await Metadata.load(conn, metadataPDA)).data;
@@ -63,7 +44,7 @@ export async function getNFTMetadataForMany(
   tokens: string[],
   conn: Connection
 ): Promise<any> {
-  const promises: Promise<NFT | undefined>[] = [];
+  const promises: Promise<INFT | undefined>[] = [];
   tokens.forEach((token) =>
     promises.push(getNFTMetadata(token, conn))
   );
@@ -84,6 +65,23 @@ export async function getNFTsByOwner(
     .map((o: any) => o.account.data.parsed.info.mint)
   //include line below to only include nfts from your project!
   //.filter((tokenAccount) => hashlist.includes(tokenAccount));
+
+  const promises = []
+  let finishedNfts: INFT[] = []
+
+  // Shuffle the array using sort and a random comparison function
+  const shuffledConnections = connections.sort(() => Math.random() - 0.5);
+  let connectionNum = 0
+  for (let i = 0; i < tokens.length; i += 10) {
+    promises.push(getNFTMetadataForMany(tokens?.slice(i, i + 10), createConnection(shuffledConnections[connectionNum])));
+    if (connectionNum === 10) {
+      connectionNum = 0
+      await wait(2000)
+    }
+    connectionNum++
+  }
+
+  const donePromises = await Promise.all(promises)
 
   return await getNFTMetadataForMany(tokens, conn);
 }
@@ -211,7 +209,7 @@ export const confirmSignatureStatus = async (signature: string, connection: Conn
     const { value: status } = await connection.getSignatureStatus(signature);
 
     // Break loop if transaction has succeeded
-    if (status && ((status.confirmationStatus === 'confirmed' || 'finalized'))) {
+    if (status?.err === null && ((status.confirmationStatus === 'confirmed') || (status.confirmationStatus === 'finalized'))) {
       txSuccess = true;
       console.log(`Transaction Success. View on explorer: https://solscan.io/tx/${signature}`);
       break;
@@ -221,7 +219,12 @@ export const confirmSignatureStatus = async (signature: string, connection: Conn
     // Break loop if blockhash has expired
     if (hashExpired) {
       console.log(`Blockhash has expired.`);
-      // (add your own logic to Fetch a new blockhash and resend the transaction or throw an error)
+      return false
+    }
+
+    // Break loop if blockhash has expired
+    if (status?.err !== null && status?.err !== undefined) {
+      console.log(`Transaction failed. View on explorer: https://solscan.io/tx/${signature}`);
       return false
     }
 
@@ -530,12 +533,10 @@ export const decryptData = async (encryptedData: string, privateKey: crypto.KeyO
 };
 
 export const walletNotConnectedPopup = () => {
-  toast.dismiss()
   toast.info("Wallet not connected.")
 }
 
 export const errorPopup = (error?: string) => {
-  toast.dismiss()
   toast.error(`Error!${error ? ` ${error}` : ''}`)
 }
 
@@ -554,6 +555,10 @@ export const connections = [
 
 export const randomConnection = () => {
   return new Connection(connections[Math.floor(Math.random() * connections.length)], { commitment: "confirmed", confirmTransactionInitialTimeout: 60000 });
+}
+
+export const createConnection = (conn: string) => {
+  return new Connection(conn, { commitment: "confirmed", confirmTransactionInitialTimeout: 60000 });
 }
 
 export const generateNewKeypair = async () => {
@@ -624,3 +629,88 @@ export const ImageWithProxyFallback = ({ src, width, height, className, style, o
     />
   )
 };
+
+
+export const toast = {
+  success: (content: ToastContent<unknown>, options?: ToastOptions<{}>) => {
+    showToast.dismiss();
+    showToast.success(content, options);
+  },
+  error: (content: ToastContent<unknown>, options?: ToastOptions<{}>) => {
+    showToast.dismiss();
+    showToast.error(content, options);
+  },
+  warning: (content: ToastContent<unknown>, options?: ToastOptions<{}>) => {
+    showToast.dismiss();
+    showToast.warning(content, options);
+  },
+  info: (content: ToastContent<unknown>, options?: ToastOptions<{}>) => {
+    showToast.dismiss();
+    showToast.info(content, options);
+  },
+  loading: (content: ToastContent<unknown>, options?: ToastOptions<{}>) => {
+    showToast.dismiss();
+    showToast.loading(content, options);
+  },
+  dismiss: () => {
+    showToast.dismiss()
+  }
+};
+
+
+export const isNftLocked = async (nft: PublicKey, user: PublicKey) => {
+  try {
+    const umi = createUmi(connections[Math.floor(Math.random() * connections.length)])
+    const metaplex = new Metaplex(randomConnection())
+    const promises = await Promise.all([metaplex.nfts().findByMint({ mintAddress: nft }), getAssociatedTokenAddress(nft, user)])
+    const nftMeta = promises[0]
+    const ata = promises[1]
+    const mint = nft.toBase58()
+
+    if (nftMeta.tokenStandard !== 4) {
+      const tokenInfo = await metaplex.nfts().findByToken({ token: ata })
+      return {
+        unlocked: tokenInfo.token.state !== 2,
+        delegate: tokenInfo.token.delegateAddress?.toBase58() ?? null,
+        listed: tokenInfo.token.state === 2,
+        nft: nft.toBase58()
+      }
+    }
+    const tokenAddress = ata.toBase58()
+    const tokenRecordAccount = await fetchTokenRecordFromSeeds(umi, { mint: publicKey(mint), token: publicKey(tokenAddress) })
+    const tokenState = tokenRecordAccount.state
+    if (unwrapSome(tokenRecordAccount.delegate) !== null) { //there IS indeed a delate in the account
+      const tokenDelegate = bs58.encode(unwrapSome(tokenRecordAccount.delegate)?.bytes ?? [])
+      return {
+        unlocked: tokenState === 0,
+        delegate: tokenDelegate,
+        listed: tokenState === 2,
+        nft: nft.toBase58()
+      }
+    } else {
+      return {
+        unlocked: tokenState === 0,
+        delegate: null,
+        listed: tokenState === 2,
+        nft: nft.toBase58()
+      }
+    }
+  } catch (e) {
+    return {
+      unlocked: true,
+      delegate: null,
+      listed: false,
+      nft: nft.toBase58()
+    }
+  }
+}
+
+export const getNftOwner = async (connection: Connection, nft: PublicKey) => {
+  const token_account = (await connection.getTokenLargestAccounts(nft))?.value[0]?.address;
+  if (token_account) {
+      const token_account_info: any = await connection.getParsedAccountInfo(token_account);
+      return token_account_info?.value?.data?.parsed?.info?.owner.toString();
+  } else {
+      return undefined
+  }
+}
