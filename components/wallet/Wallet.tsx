@@ -23,10 +23,9 @@ import { connections, randomConnection } from "../../scripts/helpers"
 
 const Wallet = ({ children }: { children: any }) => {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
-  const network = process.env
-    .NEXT_PUBLIC_CONNECTION_NETWORK as WalletAdapterNetwork
+  const network = (process.env.NEXT_PUBLIC_DEVNET === "false" ? "mainnet-beta" : "devnet") as WalletAdapterNetwork
 
-  const endpoint = connections[Math.floor(Math.random() * connections.length)]
+  const endpoint = process.env.NEXT_PUBLIC_DEVNET === "false" ? connections[Math.floor(Math.random() * connections.length)] : "https://api.devnet.solana.com"
 
   const wallets = useMemo(
     () => [
